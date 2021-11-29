@@ -7,44 +7,23 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Portolio Online</title>
+        <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="style.css">
-
-
- 
-
+        <link rel="stylesheet" href="">
     </head>
-<section class="carrosel" >
-<div id="he"></div>
-
-</section>
-    <header>
-        <nav>   
-         <ul>
-            
-            <li><a href="page1.html">Inicio</a></li>
-            <li><a href="#">Portolios</a></li>
-            
-  
-        
-        
-        
-        
-        
-            </ul>
-        </nav>
-   
-
-
-    </header>
     <body>
-     <h1>Hello in the future this page will be my online portfolio </h1>
-     <h4>Se You Soon 	&copy;Luis Henrique De Morais </h4> 
-        <script src="" async defer></script>
-    </body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.1.1/d3.js" integrity="sha512-gIER+r9k70gtEKHRZuyOVIKis4Vy0RFGSGhW48dIqyXAnuqr3Enxwc71gq5ludmgOCYvg7pgSFu6Er3NytazKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <div id="content"></div>
 
-    <script src="page1.js"></script>
+       
+    </body>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.1.1/d3.js" integrity="sha512-gIER+r9k70gtEKHRZuyOVIKis4Vy0RFGSGhW48dIqyXAnuqr3Enxwc71gq5ludmgOCYvg7pgSFu6Er3NytazKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </html>
+<script>
+alert("teste");
+var svg = d3.select("#content").append("svg").attr("height", 550).attr("width", 500).attr('stroke', 'white').attr('stroke-width', 1);
+var temp =svg.append('rect').attr('width', 900).attr('height', 300).attr('x', 10).attr('y', 10).attr('fill', 'grey');
+
+</script>

@@ -36,6 +36,7 @@ a:hover,a:active{
         padding: 14px 16px;
         text-decoration: none;
         display: block;
+        font-family:Lucida Console;
         
       }
       .carrosel{

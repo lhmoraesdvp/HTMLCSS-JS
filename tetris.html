@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.4/math.js"></script>
+
+    <meta charset="utf-8" />
+    <title>Tetris.js</title>
+</head>
+
+<body style="background-color:Azure;">
+    <div id='gg'></div>
+
+
+    <script>
+        //----------------------------------------globais-----------------------------------------
+
+        var map = [];
+        var svg = '';
+
+
+			
+
+        //-------------------------------------------------------------------------------------------
+        var piece = {
+            svg: 0,
+            x: 124.5,
+            y: 75,
+            rotate_value: 0,
+            circ: 0
+
+        };
+
+        document.querySelector('body').addEventListener('keydown', function(event) {
+
+            switch (event.keyCode) {
+                case 32:
+                    //barra 
+
+                    rotate();
+
+                    break;
+
+                case 37:
+                    //seta esquerda 
+                    movl(m);
+
+                    break;
+                case 38:
+                    //seta cima 
+                    movu(m);
+
+                    break;
+
+                case 39:
+                    //seta direita 
+                    movr(m);
+
+                    break;
+                case 40:
+                    //seta baixo 
+                    toMove_down();
+
+                    break;
+            }
+
+
+        });
+
+
+
+
+        var forma = {
+            'x1': 0,
+            'x2': 0,
+            'x3': 0,
+            'x4': 0,
+            'y1': 0,
+            'y2': 0,
+            'y3': 0,
+            'y4': 0,
+            'cor': 'purple'
+
+
+
+
+        }
+        var pxmove = 0;
+        var pymove = 0;
+        var pbup = 0;
+        var circ;
+        var dataArray = [{
+                x: 50,
+                y: 50
+            }, {
+                x: 100,
+                y: 50
+            }, {
+                x: 100,
+                y: 100
+            }, {
+                x: 50,
+                y: 100
+            }, {
+                x: 50,
+                y: 50
+            },
+            {
+                x: 100,
+                y: 50
+            }, {
+                x: 150,
+                y: 50
+            }, {
+                x: 150,
+                y: 100
+            }, {
+                x: 100,
+                y: 100
+            }, {
+                x: 100,
+                y: 50
+            },
+            {
+                x: 150,
+                y: 50
+            }, {
+                x: 200,
+                y: 50
+            }, {
+                x: 200,
+                y: 100
+            }, {
+                x: 150,
+                y: 100
+            }, {
+                x: 150,
+                y: 50
+            },
+            {
+                x: 150,
+                y: 100
+            }, {
+                x: 150,
+                y: 150
+            }, {
+                x: 100,
+                y: 150
+            }, {
+                x: 100,
+                y: 100
+            }, {
+                x: 150,
+                y: 100
+            }
+
+        ];
+
+
+        function piece_Remove() {
+
+            let maxx = 0;
+            let maxy = 0;
+            for (let i = 0; i < 5; i++) {
+                if (dataArray[i].x > maxx) {
+                    maxx = dataArray[i].x
+                };
+                if (dataArray[i].y > maxy) {
+                    maxy = dataArray[i].y
+                };
+
+            }
+
+            let x = maxx / 50;
+            let y = (maxy / 50) - 1;
+            map[y][x].attr('fill', 'grey');
+            piece.svg.remove();
+            //----------------------------------------------------------
+            maxx = 0;
+            maxy = 0;
+            for (let i = 5; i < 10; i++) {
+                if (dataArray[i].x > maxx) {
+                    maxx = dataArray[i].x
+                };
+                if (dataArray[i].y > maxy) {
+                    maxy = dataArray[i].y
+                };
+
+            }
+
+            x = maxx / 50;
+            y = (maxy / 50) - 1;
+            map[y][x].attr('fill', 'grey');
+            piece.svg.remove();
+            //----------------------------------------------------------
+
+            maxx = 0;
+            maxy = 0;
+            for (let i = 10; i < 15; i++) {
+                if (dataArray[i].x > maxx) {
+                    maxx = dataArray[i].x
+                };
+                if (dataArray[i].y > maxy) {
+                    maxy = dataArray[i].y
+                };
+
+            }
+
+            x = maxx / 50;
+            y = (maxy / 50) - 1;
+            map[y][x].attr('fill', 'grey');
+            piece.svg.remove();
+            //----------------------------------------------------------
+
+            maxx = 0;
+            maxy = 0;
+            for (let i = 15; i < 20; i++) {
+                if (dataArray[i].x > maxx) {
+                    maxx = dataArray[i].x
+                };
+                if (dataArray[i].y > maxy) {
+                    maxy = dataArray[i].y
+                };
+
+            }
+
+            x = maxx / 50;
+            y = (maxy / 50) - 1;
+            map[y][x].attr('fill', 'grey');
+            piece.svg.remove();
+            //----------------------------------------------------------
+
+
+
+        }
+
+        function draw() {
+
+
+
+            //   alert("teste0");
+
+
+            // alert("teste1");
+
+            var line = d3.line()
+                .x(function(d, i) {
+                    return d.x * 1;
+                })
+                .y(function(d, i) {
+                    return d.y * 1;
+                });
+            //   alert("teste2");
+
+            piece.svg = svg.append('path')
+                .attr('fill', 'none')
+                .attr('stroke', 'green')
+                .attr('stroke-width', '2')
+                .attr('d', line(dataArray))
+                .attr('fill', 'red')
+                .attr('class', 'xt');
+
+            let maxx = 0;
+            let maxy = 0;
+            for (let i = 0; i < 5; i++) {
+                if (dataArray[i].x > maxx) {
+                    maxx = dataArray[i].x
+                };
+                if (dataArray[i].y > maxy) {
+                    maxy = dataArray[i].y
+                };
+
+            }
+
+            let x = maxx / 50;
+            let y = (maxy / 50) - 1;
+            map[y][x].attr('fill', 'green');
+            //----------------------------------------------------------
+
+            maxx = 0;
+            maxy = 0;
+            for (let i = 5; i < 10; i++) {
+                if (dataArray[i].x > maxx) {
+                    maxx = dataArray[i].x
+                };
+                if (dataArray[i].y > maxy) {
+                    maxy = dataArray[i].y
+                };
+
+            }
+
+            x = maxx / 50;
+            y = (maxy / 50) - 1;
+            map[y][x].attr('fill', 'green');
+            //--------------------------------------------------------------
+
+
+            maxx = 0;
+            maxy = 0;
+            for (let i = 10; i < 15; i++) {
+                if (dataArray[i].x > maxx) {
+                    maxx = dataArray[i].x
+                };
+                if (dataArray[i].y > maxy) {
+                    maxy = dataArray[i].y
+                };
+
+            }
+
+            x = maxx / 50;
+            y = (maxy / 50) - 1;
+            map[y][x].attr('fill', 'green');
+
+            //--------------------------------------------------------------
+
+
+            maxx = 0;
+            maxy = 0;
+            for (let i = 15; i < 20; i++) {
+                if (dataArray[i].x > maxx) {
+                    maxx = dataArray[i].x
+                };
+                if (dataArray[i].y > maxy) {
+                    maxy = dataArray[i].y
+                };
+
+            }
+
+            x = maxx / 50;
+            y = (maxy / 50) - 1;
+            map[y][x].attr('fill', 'green');
+
+            //  let xx= x*50;
+            //  let yy = (y*50)+50 ;
+            //	 alert("claudia e boba");  
+
+            // alert("x e "+xx+" y eeee "+yy);
+            // imap[y][x]=svg.append('rect').attr('width',8).attr('height',10).attr('fill','blue').attr('x',xx).attr('y',yy).attr('stroke','blue').attr('class','mm2');
+
+
+
+
+            alert("x = " + x + " e y " + y);
+
+
+
+
+        }
+
+        function direita(forma) {
+            deleta(forma, dataArray, map);
+            m.cx += 50;
+
+
+            for (element of dataArray) {
+
+                element.x += 50;
+
+
+            }
+
+            draw(line, map);
+            forma.svg
+                .attr('transform', 'rotate(' + forma.cbup + ', ' + parseFloat(forma.cx) + ',' + parseFloat(forma.cy) + ')');
+
+        }
+
+
+        function movr(forma) {
+
+
+
+
+            if (m.cx + 76 < 500) {
+
+                direita(forma);
+
+            }
+        }
+
+
+
+        function esquerda(forma) {
+            deleta(forma, dataArray, map);
+
+            m.cx -= 50;
+
+
+            for (element of dataArray) {
+
+                element.x -= 50;
+
+
+            }
+
+            draw(line, map);
+            forma.svg
+                .attr('transform', 'rotate(' + forma.cbup + ', ' + parseFloat(forma.cx) + ',' + parseFloat(forma.cy) + ')');
+
+        }
+
+        function movl(forma) {
+
+            //   alert(m.cbup);
+            if (m.cx - 76 > 0 && m.cbup != 270) {
+
+
+                esquerda(forma);
+
+
+            }
+            if (m.cx - 76 > -50 && m.cbup == 270) {
+
+
+                esquerda(forma);
+
+
+            }
+
+        }
+
+        function sobe(forma) {
+
+
+            //  forma.cx=forma.cx+50.5;
+            // forma.cy=forma.cy+50;
+            //  pymove+=50.5;
+
+            // let ssvg= forma.svg
+            // .transition()
+            // .duration(100)
+            // .attr('transform', 'translate('+ pxmove+','+pymove+')') ;
+            // .transition().attr('transform', 'rotate('+forma.cbup+', '+parseFloat(forma.cx)+','+ parseFloat(forma.cy)+')');
+            deleta(forma, dataArray, map);
+
+            m.cy -= 50;
+
+            for (element of dataArray) {
+
+                element.y -= 50;
+
+
+            }
+
+            draw(line, map);
+
+
+            forma.svg
+                .attr('transform', 'rotate(' + forma.cbup + ', ' + parseFloat(forma.cx) + ',' + parseFloat(forma.cy) + ')');
+
+
+
+
+        }
+
+        function movu(forma) {
+
+            if (m.cy - 51 > 100 && m.cbup != 0 || m.cy - 51 > 100 && m.cbup != 360) {
+
+
+                sobe(forma);
+
+
+
+
+            } else {
+                if (m.cy - 51 > 50 && m.cbup == 0 || m.cy - 51 > 50 && m.cbup == 360) {
+                    sobe(forma);
+
+
+                }
+
+
+
+
+            }
+
+
+
+        }
+
+        function rotate() {
+             (piece.rotate_value == 360?piece.rotate_value = 0:piece.rotate_value += 90) 
+              piece.svg
+              .attr('transform', 'rotate(' + piece.rotate_value + ', ' + parseFloat(piece.x) + ',' + parseFloat(piece.y) + ')');
+			
+		
+		
+		      let xx="";
+			  let yy="";
+			  let t="x"
+			  let bb ={
+			  x:0,
+			  y:0
+			 }
+			
+			   var arr=[];
+			  
+		
+			  
+			  for(let i=1; i<piece.svg.attr('d').length ;i++){
+			  	
+			  
+			   if(piece.svg.attr('d')[i]=='L'){
+			   bb.y=yy;
+			   xx="";
+			   yy="";
+			 
+			   arr.push({'x':bb.y,'y':bb.x});
+			   t="x";
+			        
+
+				
+			 
+			   }
+			   else{
+			   	  
+			   if(piece.svg.attr('d')[i]==','){
+			  
+			    bb.x=xx;
+			    xx="";
+			    yy="";
+			   y="y";
+			   t='y';
+			       
+
+
+				
+			   
+			   
+			   }
+			    else{
+			   if(t=="x"){ xx+=piece.svg.attr('d')[i]; }
+			   if(t=="y"){ yy+=piece.svg.attr('d')[i]; }
+			   
+			   }
+			   
+			   }
+			  
+			  
+			  
+			  }
+			  
+			  
+	
+		console.log(arr);
+		
+		
+			  
+			  
+        }
+        //---------------------------------------down piece ---------------------------------------------------		  
+        function down() {
+
+            piece_Remove();
+            piece.y += 50
+
+
+            for (element of dataArray) {
+
+                element.y += 50;
+
+
+            }
+
+            draw();
+            piece.svg
+                .attr('transform', 'rotate(' + piece.rotate_value + ', ' + parseFloat(piece.x) + ',' + parseFloat(piece.y) + ')');
+        }
+
+        //---------------------------------------verify move to down ---------------------------------------------------	
+        function toMove_down() {
+
+
+
+            if (piece.y + 51 < 500 && piece.cbup != 180) {
+                down(piece);
+
+            } else {
+                if (forma.cbup == 180 && piece.y + 51 < 550) {
+                    down(piece);
+                }
+                if (forma.cbup == 360 && piece.y + 51 < 500) {
+                    down(piece);
+                }
+
+
+            }
+
+        }
+        //-------------------------------------------------------------------------------------------------------------------
+
+     
+
+
+
+
+        function drawBoard(map) {
+            //-------------------------------------
+		    svg = d3.select("#gg").append("svg").attr("height", 550).attr("width", 500).attr('stroke', 'white').attr('stroke-width', 1);
+            let iy = 1;
+            let ix = 1;
+
+            for (let i = 1; i < 101; i++) {
+
+                map[i] = [];
+
+            }
+
+            //--------------------------------------
+            for (var y = 50; y < 550; y += 50) {
+                ix = 1;
+                for (var x = 0; x < 500; x += 50) {
+
+
+
+                    map[iy][ix] = svg.append('rect').attr('width', 50).attr('height', 50).attr('x', x).attr('y', y).attr('fill', 'grey');
+					ix++;
+					
+                }
+				
+                iy++;
+				
+            }
+
+
+
+        }
+
+
+
+        drawBoard(map);
+        var line = forma;
+
+        line.x1 = parseFloat(map[1][5].attr('x'));
+        line.y1 = parseFloat(map[1][5].attr('y'));
+        line.x2 = parseFloat(map[2][5].attr('x'));
+        line.y2 = parseFloat(map[2][5].attr('y'));
+
+
+        draw(map);
+    </script>
+</body>
+
+
+
+
+
+</html>
