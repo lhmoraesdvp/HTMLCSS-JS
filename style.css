@@ -4,17 +4,15 @@ list-style: none;
 
 }
 
-a:link,a:visited{
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: black;
+  }
+  
 
-text-decoration:none;
-background-color: gray;
-width: 600px;
-display: block;
-text-align: center;
-border: 1px solid blue;
-color: black;
-margin-bottom: 1px;
-}
 
 a:hover,a:active{
 
@@ -24,3 +22,29 @@ a:hover,a:active{
     
    
     }
+
+
+
+    li {
+        float: left;
+      }
+      
+      li a {
+ 
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        display: block;
+        
+      }
+      .carrosel{
+
+
+width: auto;
+height: 350px;
+display: block;
+background-color: green;
+
+
+      }
